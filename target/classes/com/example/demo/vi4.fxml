@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="509.0" prefWidth="781.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Vi4Controller">
+   <children>
+      <Button layoutX="147.0" layoutY="168.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="147.0" layoutY="217.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="147.0" layoutY="266.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="147.0" layoutY="323.0" mnemonicParsing="false" text="Button" />
+      <TextArea layoutX="458.0" layoutY="155.0" prefHeight="200.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,108 @@
+static float[][] a = { { 4, 3, 2, 1 }, { 3, 6, 4, 2 }, { 2, 4, 6, 3 }, { 1, 2, 3, 4 } };
+	static float[] b = { 3, 6, 4, 7 };
+
+	static final int n = 4;
+	static final float eps = 0.001f;
+
+public static float[] zeidel(float a[][], float b[]) {
+		a = triangulation(a, b);
+		float[] x0 = { 0, 0, 0, 0 };
+		float x[];
+		x = new float[n];
+		float s, sum, delta;
+
+		do {
+			for (int i = 0; i < n; i++) {
+				x[i] = b[i];
+				for (int j = 0; j < i - 1; j++) {
+					x[i] -= a[i][j] * x[j];
+				}
+				for (int j = i + 1; j < n; j++) {
+					x[i] -= a[i][j] * x0[j];
+				}
+				x[i] /= a[i][i];
+			}
+
+			delta = 0;
+			for (int i = 0; i < n; i++) {
+				delta += Math.abs(x[i] - x0[i]);
+				x0[i] = x[i];
+			}
+			s = 0;
+			sum = 0;
+			for (int i = 0; i < n; i++) {
+				sum = b[i];
+				for (int j = 0; j < n; j++) {
+					sum -= a[i][j] * x[j];
+				}
+				s += sum * sum;
+			}
+			s = (float) Math.sqrt(s);
+		} while (s > eps && delta > eps);
+		return x;
+
+	}
+
+public static float[][] triangulation(float a[][], float b[]) {
+
+		float determinant = 1;
+		for (int stagesOfForwardMotion = 0; stagesOfForwardMotion + 1 < n; stagesOfForwardMotion++) {
+			float aMax = 0;
+			int iMax = 0;
+			for (int i = stagesOfForwardMotion; i < n; i++) {
+				if (Math.abs(a[i][stagesOfForwardMotion]) > aMax) {
+					aMax = a[i][stagesOfForwardMotion];
+					iMax = i;
+				}
+			}
+			determinant *= aMax;
+			if (iMax != stagesOfForwardMotion) {
+				a = swapLinesOfTDArray(a, iMax, stagesOfForwardMotion);
+				b = swapLinesOfODArray(b, iMax, stagesOfForwardMotion);
+				determinant *= -1;
+			}
+
+			for (int j = stagesOfForwardMotion; j < n; j++) {
+				a[stagesOfForwardMotion][j] /= aMax;
+				;
+			}
+
+			b[stagesOfForwardMotion] /= aMax;
+
+			for (int i = 1 + stagesOfForwardMotion; i < n; i++) {
+				float k = a[i][stagesOfForwardMotion];
+				for (int j = stagesOfForwardMotion; j < n; j++) {
+					a[i][j] -= (a[stagesOfForwardMotion][j]) * k;
+
+				}
+				b[i] -= b[stagesOfForwardMotion] * k;
+			}
+			for (int j = 0; j < n; j++) {
+				a[stagesOfForwardMotion][j] *= aMax;
+				;
+			}
+			b[stagesOfForwardMotion] *= aMax;
+		}
+
+		return a;
+	}
+
+	public static float[][] swapLinesOfTDArray(float a[][], int i1, int i2) {
+
+		float[] b = new float[n];
+		for (int j = 0; j < n; j++) {
+			b[j] = a[i1][j];
+			a[i1][j] = a[i2][j];
+			a[i2][j] = b[j];
+		}
+		return a;
+	}
+
+	public static float[] swapLinesOfODArray(float a[], int i1, int i2) {
+
+		float b = a[i1];
+		a[i1] = a[i2];
+		a[i2] = b;
+		return a;
+	}
+
